@@ -17,8 +17,8 @@ def measure():
 
 GPIO.setmode(GPIO.BOARD)
 
-GPIO_TRIGGER = 7
-GPIO_EchoList    = [11,13,15]
+GPIO_TRIGGER = 8
+GPIO_EchoList = [7,11,12,13,15,16,18,22]
 
 print("Ultrasonic Measurement")
 
@@ -28,9 +28,11 @@ for i in GPIO_EchoList:
 	GPIO.setup(i,GPIO.IN)
 	GPIO_ECHO = i
 	distance = measure()
-	print("Pin#%d  Distance : %.1f cm" % (i, distance))
-	time.sleep(1)
-
+	if distance > 500.0:
+		print("Invalid Reading(too far)")
+	elif distance < 2.0:
+		print("Invalid Reading(too short)")
+	else:
+		print("Pin#%d  Distance : %.1f cm" % (i, distance))
+	time.sleep(0.01)
 GPIO.cleanup()
-
-#Credits: Script based on Matt Hawkins' work. Thanks.
